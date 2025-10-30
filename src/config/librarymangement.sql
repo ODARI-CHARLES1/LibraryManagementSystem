@@ -106,4 +106,6 @@ INSERT INTO Comments (user_id, book_id, rating, comment) VALUES
  4,
  'Very insightful book!');
 
+ insert into comments VALUEs(3,1,3,'Very Informative','2025-10-26T19:54:44.220Z')
+
  SELECT * FROM Comments;
