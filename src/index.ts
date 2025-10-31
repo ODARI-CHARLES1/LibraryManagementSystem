@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.send("Hello, the express server is running")
 })
 
-const port = 8081
+const port = 3000
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 })

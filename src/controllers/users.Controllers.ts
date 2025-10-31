@@ -139,48 +139,21 @@ export const getMemberById = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const userData = req.body;
-    if (
-      !userData.username ||
-      !userData.email ||
-      !userData.password ||
-      !userData.role
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required user fields",
-      });
-    }
-    //checking the user with the same email exists
-    const existingUser = await userServices.getUserByEmail(userData.email);
-    if (existingUser) {
-      return res
-        .status(409)
-        .json({ success: false, message: "User with this email already exists" });
-    } else {
-
-      //validate user email.
-      const valid_email=validateEmail(userData.email)
-      if(!valid_email){
-        return res
-        .status(400)
-        .json({success:false,message:"Invalid email"})
-      }
-      const password = await hashPassword(userData.password);
-      const created = await getDate();
-
-      userData.created_at = created;
-      userData.password = password;
-
+      const userData=req.body
       const newUser = await userServices.insertUser(userData);
-      console.log(newUser);
-      res.status(201).json({
+      if(newUser?.success==false){
+        res.status(400).json({success:false,message:newUser.Message})
+      }
+      else{
+          res.status(201).json({
         success: true,
         message: "User created successfully",
-        data: newUser,
+        newUser:newUser.registerUser
       });
+      }
+    
     }
-  } catch (error: any) {
+   catch (error: any) {
     res.status(500).json({
       success: false,
       error: error.message || "Internal Server Error",
@@ -245,3 +218,18 @@ export const getUserByEmail = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+export const userlogin=async(req:Request,res:Response)=>{
+  try {
+    const user=req.body
+   const loginUser=await userServices.loginUser(user)
+   res.status(201).json(loginUser)
+  } catch (error:any) {
+     console.log("Error to login",error)
+     return res.status(500).json({
+      success:false,
+      error:error.message || "Internal Server Error"
+     })
+  }
+}
