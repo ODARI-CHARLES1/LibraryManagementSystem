@@ -4,8 +4,6 @@ import assert from 'assert';
 import sql from 'mssql';
 dotenv.config();
 
-
-
 const {
     SQL_SERVER,
     SQL_DB,

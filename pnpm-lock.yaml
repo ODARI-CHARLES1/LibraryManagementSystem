@@ -1110,6 +1110,7 @@ snapshots:
     dependencies:
       '@types/http-errors': 2.0.5
       '@types/node': 24.9.2
+      '@types/node': 24.9.1
       '@types/send': 0.17.6
 
   '@typespec/ts-http-runtime@0.3.1':
@@ -1615,6 +1616,7 @@ snapshots:
       '@azure/keyvault-keys': 4.10.0
       '@js-joda/core': 5.6.5
       '@types/node': 24.9.2
+      '@types/node': 24.9.1
       bl: 6.1.4
       iconv-lite: 0.6.3
       js-md4: 0.3.2
