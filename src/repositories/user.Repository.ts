@@ -1,5 +1,5 @@
 import { getPool } from "../config/database";
-import { User,newUser,updateUser } from "../types/users.types";
+import { User,existingUser,newUser,updateUser } from "../types/users.types";
 
 export const getAdmins = async (): Promise<User[]> => {
   try {
@@ -123,7 +123,7 @@ export const insertUser = async (user: newUser): Promise<void> => {
       .input("username", user.username)
       .input("email", user.email)
       .input("password", user.password)
-      .input("role", user.role)
+      .input("role", user.role?? 'Member')
       .input("date", user.created_at)
       .query(`
         INSERT INTO Users (username, email, password_hash, role, created_at)
@@ -149,3 +149,20 @@ export const deleteUser = async (user_id: number): Promise<void> => {
     throw error;
   }
 };
+
+
+export const loginUser =async(user:existingUser):Promise<User[]|null>=>{
+  try {
+      const pool=await getPool()
+     const existingUser= await pool
+         .request()
+         .input("email",user.email)
+         .query("SELECT * FROM Users WHERE email=@email")
+      if(!existingUser.recordset[0]){
+        return null
+      }
+      return existingUser.recordset
+  } catch (error) {
+    throw error
+  }
+}

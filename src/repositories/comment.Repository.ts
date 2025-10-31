@@ -8,7 +8,6 @@ export const getAllComments = async (): Promise<Comment[]> => {
     const pool = await getPool();
     
     const result = await pool.request().query('SELECT * FROM Comments');
-    
     return result.recordset as Comment[];
 };
 
@@ -17,10 +16,7 @@ export const getCommentById = async (id: number): Promise<Comment | undefined> =
     const result = await pool
         .request()
         .input('id', id)
-        
         .query('SELECT * FROM Comments WHERE comment_id = @id');
-    
-    
     return result.recordset[0] as Comment | undefined;
 };
 

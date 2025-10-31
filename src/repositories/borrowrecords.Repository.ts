@@ -4,12 +4,14 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
+//getall Borrowrecords
 export const getAllBorrowRecords = async (): Promise<BorrowRecord[]> => {
   const pool = await getPool();
   const result = await pool.request().query("SELECT * FROM BorrowRecords");
   return result.recordset;
 };
 
+//get borrow records by id
 export const getBorrowRecordById = async (borrow_id: number): Promise<BorrowRecord | null> => {
   const pool = await getPool();
   const result = await pool.request()
@@ -18,6 +20,8 @@ export const getBorrowRecordById = async (borrow_id: number): Promise<BorrowReco
   return result.recordset[0] || null;
 };
 
+
+//inserting a new record
 export const insertBorrowRecord = async (record: NewBorrowRecord): Promise<void> => {
   const pool = await getPool();
   await pool.request()
@@ -32,6 +36,8 @@ export const insertBorrowRecord = async (record: NewBorrowRecord): Promise<void>
     `);
 };
 
+
+//updating existing record
 export const updateBorrowRecord = async (record: UpdateBorrowRecord): Promise<void> => {
   const pool = await getPool();
   await pool.request()
@@ -48,6 +54,7 @@ export const updateBorrowRecord = async (record: UpdateBorrowRecord): Promise<vo
     `);
 };
 
+//clear borrow record
 export const clearBorrowRecord = async (record: ClearBorrowRecord): Promise<void> => {
   const pool = await getPool();
   await pool.request()
@@ -64,6 +71,7 @@ export const clearBorrowRecord = async (record: ClearBorrowRecord): Promise<void
     `);
 };
 
+//delete Borrow record
 export const deleteBorrowRecord = async (borrow_id: number): Promise<void> => {
   const pool = await getPool();
   await pool.request()
