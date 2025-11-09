@@ -1,5 +1,4 @@
-<<<<<<< HEAD:src/repositories/users.repository.ts
-=======
+
 import { getPool } from "../config/database";
 import { User,existingUser,newUser,updateUser } from "../types/users.types";
 
@@ -152,9 +151,7 @@ export const deleteUser = async (user_id: number): Promise<void> => {
     throw error;
   }
 };
-<<<<<<< HEAD
->>>>>>> 0e78c8e8103f6a28cd26871106edc5eb12c5fc87:src/repositories/user.Repository.ts
-=======
+
 
 
 export const loginUser =async(user:existingUser):Promise<User[]|null>=>{
@@ -172,4 +169,4 @@ export const loginUser =async(user:existingUser):Promise<User[]|null>=>{
     throw error
   }
 }
->>>>>>> a5d138454f12617a3e72c18d31372081e4808f86
+
