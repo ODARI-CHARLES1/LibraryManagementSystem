@@ -1,14 +1,17 @@
 import  express from "express";
-import { getPool } from "./config/database.js";
-import userRouter from "./router/user.routes.js";
-import borrowRouter from "./router/borrowrecords.Routes.js";
-import categoriesRouter from './router/categories.Routes.js';
-import booksRouter from './router/books.Routes.js';
-import commentsRouter from './router/comments.Routes.js';
+import { getPool } from "./config/database";
+import userRouter from "./router/user.routes";
+import borrowRouter from "./router/borrowrecords.Routes";
+import categoriesRouter from './router/categories.Routes';
+import booksRouter from './router/books.Routes';
+import commentsRouter from './router/comments.Routes';
+import { rateLimiterMiddleware } from "./Middlewares/rateLimiter";
+import cors from 'cors'
 
 const app = express()
 app.use(express.json())
-
+app.use(cors())
+//load routes
 app.use("/api",userRouter)
 app.use("/api",borrowRouter)
 app.use('/api/categories', categoriesRouter);
@@ -20,7 +23,8 @@ app.get("/", (req, res) => {
 })
 
 app.get("/", (req, res) => {res.send("Hello, the express server is running")})
-//load routes
+app.get("/home",(req,res)=>{res.send("Try Again after 20mins")})
+
 
 const port = 3000
 app.listen(port, () => {

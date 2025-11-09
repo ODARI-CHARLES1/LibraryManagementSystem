@@ -11,6 +11,7 @@ export const getAllBorrowRecords = async (): Promise<BorrowRecord[]> => {
   return result.recordset;
 };
 
+
 //get borrow records by id
 export const getBorrowRecordById = async (borrow_id: number): Promise<BorrowRecord | null> => {
   const pool = await getPool();

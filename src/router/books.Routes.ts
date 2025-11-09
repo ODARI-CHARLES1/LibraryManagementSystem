@@ -7,7 +7,7 @@ import { authorize } from '../Middlewares/roleAuth.js';
 
 const router = Router();
 
-router.get('/',isAuthenticated, BookController.getAllBooks);
+router.get('/',isAuthenticated,BookController.getAllBooks);
 router.get('/:id',isAuthenticated, BookController.getBookById);
 
 //odari take note of these routes below to be protected, in admin role

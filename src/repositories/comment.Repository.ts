@@ -1,12 +1,12 @@
 
-import { getPool } from '../config/database'; 
+import { getPool } from '../config/database';
 
-import { Comment, NewComment, UpdateComment } from '../types/comments.Interface'; 
+import { Comment, NewComment, UpdateComment } from '../types/comments.Interface';
 
 
 export const getAllComments = async (): Promise<Comment[]> => {
     const pool = await getPool();
-    
+
     const result = await pool.request().query('SELECT * FROM Comments');
     return result.recordset as Comment[];
 };
@@ -30,17 +30,17 @@ export const createComment = async (comment: NewComment) => {
         .input('book_id', comment.book_id)
         .input('rating', comment.rating)
         .input('comment', comment.comment)
-        
+
         .query(`
             INSERT INTO Comments (user_id, book_id, rating, comment) 
             VALUES (@user_id, @book_id, @rating, @comment)
         `);
-   
+
     return { message: 'Comment created successfully' };
 }
 
 
- 
+
 
 export const updateComment = async (id: number, comment: UpdateComment) => {
     const pool = await getPool();
