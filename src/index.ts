@@ -18,6 +18,9 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/books', booksRouter);
 app.use('/api', commentsRouter);
 
+//middleware
+app.use(express.json());
+
 app.get("/", (req, res) => {
     res.send("Hello, the express server is running")
 })
@@ -30,20 +33,10 @@ const port = 3000
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
 })
-const pool= getPool()
-pool.then(pool=>{
-    console.log("Database Connected Successfully")
-})
-.catch(err=>{
-    console.log("Failed to connect to DB",err)
-})
 
 
 
 
-
-
-
-
-
-
+getPool()
+.then(() => console.log("Database connected successfully"))
+.catch((err: any) => console.error("Database connection failed", err))
