@@ -10,7 +10,10 @@ import cors from 'cors'
 
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin:"http://localhost:5173",
+    methods:["POST","GET","PUT","DELETE"]
+}))
 //load routes
 app.use("/api",userRouter)
 app.use("/api",borrowRouter)

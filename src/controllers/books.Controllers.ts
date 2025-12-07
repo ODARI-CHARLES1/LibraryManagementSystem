@@ -43,7 +43,7 @@ export const createBook = async (req: Request, res: Response): Promise<void> => 
   try {
     const input: BookInput = req.body;
 
-    // Basic required fields
+  
     if (!input.title?.trim() || !input.author?.trim()) {
       res.status(400).json({ message: 'Title and author are required' });
       return;
@@ -116,7 +116,7 @@ export const deleteBook = async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
-    res.status(204).send(); // No content
+    res.status(204).send();
   } catch (error: any) {
     res.status(500).json({ message: 'Failed to delete book', error: error.message });
   }

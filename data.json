@@ -1,0 +1,22 @@
+{
+  "environment": {
+    "location": "Room A",
+    "readings": [
+      {
+        "timestamp": "2025-12-02T09:00:00Z",
+        "temperature_c": 22.4,
+        "humidity_percent": 46.1
+      },
+      {
+        "timestamp": "2025-12-02T10:00:00Z",
+        "temperature_c": 23.0,
+        "humidity_percent": 45.3
+      },
+      {
+        "timestamp": "2025-12-02T11:00:00Z",
+        "temperature_c": 23.7,
+        "humidity_percent": 44.5
+      }
+    ]
+  }
+}

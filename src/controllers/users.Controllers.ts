@@ -140,15 +140,18 @@ export const getMemberById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   try {
       const userData=req.body
-      const newUser = await userServices.insertUser(userData);
-      if(newUser?.success==false){
-        res.status(400).json({success:false,message:newUser.Message})
+      const registeredUser = await userServices.insertUser(userData);
+      console.log(registeredUser)
+      if(registeredUser?.success==false){
+        res.status(400).json({success:false,message:registeredUser.Message})
       }
+
       else{
-          res.status(201).json({
+        const {success,...registered}=registeredUser
+        res.status(201).json({
         success: true,
         message: "User created successfully",
-        newUser:newUser
+        registered
       });
       }
     
@@ -233,3 +236,31 @@ export const userlogin=async(req:Request,res:Response)=>{
      })
   }
 }
+
+export const updateUser = async (req: Request, res: Response) => {
+  try {
+    const { username, email, password, role } = req.body;
+
+    const updatedUser = await userServices.updateUser({
+      username,
+      email,
+      password,
+      role,
+    });
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found with this email" });
+    }
+
+    return res
+      .status(200)
+      .json({ success: true, message: "User updated successfully", data: updatedUser });
+
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ success: false, message: error.message });
+  }
+};

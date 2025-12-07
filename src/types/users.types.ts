@@ -18,7 +18,8 @@ export interface newUser{
     password_hash?:string
 }
 
-export interface updateUser{
+export interface TupdateUser{
+    email:string,
     username?:string,
     password?:string,
     role?:'Admin' |'Member',
@@ -36,9 +37,10 @@ export interface loginJwtConfig{
     payload:{
         id:number
         username:string,
-        role:string
-        created:Date
-        updated:Date
+        role:string,
+        created:Date,
+        updated:Date,
+        email:string,
     },
     expires:string,
     secret:string

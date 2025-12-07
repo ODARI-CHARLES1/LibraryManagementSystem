@@ -11,8 +11,8 @@ router.get('/',isAuthenticated,BookController.getAllBooks);
 router.get('/:id',isAuthenticated, BookController.getBookById);
 
 //odari take note of these routes below to be protected, in admin role
-router.post('/',authorize,isAuthenticated,BookController.createBook);
-router.put('/:id',isAuthenticated,authorize,BookController.updateBook);
-router.delete('/:id',isAuthenticated,authorize,BookController.deleteBook);
+router.post('/',isAuthenticated,authorize("admin"),BookController.createBook);
+router.put('/:id',isAuthenticated,authorize("admin"),BookController.updateBook);
+router.delete('/:id',isAuthenticated,authorize("admin"),BookController.deleteBook);
 
 export default router;

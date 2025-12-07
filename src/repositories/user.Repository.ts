@@ -1,6 +1,6 @@
 
 import { getPool } from "../config/database";
-import { User,existingUser,newUser,updateUser } from "../types/users.types";
+import type { User,existingUser,newUser,TupdateUser } from "../types/users.types";
 
 export const getAdmins = async (): Promise<User[]> => {
   try {
@@ -131,8 +131,8 @@ export const insertUser = async (user: newUser): Promise<User[] | null> => {
         VALUES (@username, @email, @password, @role, @date)
       `);
      const newUser=await pool.request().input("email",user.email).query("SELECT * FROM Users WHERE email=@email ")
-  
-     return newUser.recordset[0]
+     const {password_hash,...registeredUser}=newUser.recordset[0]
+     return registeredUser
   } catch (error) {
     console.error("Failed to insert user:", error);
     throw error;
@@ -170,3 +170,20 @@ export const loginUser =async(user:existingUser):Promise<User[]|null>=>{
   }
 }
 
+
+export const updateUser = async (user: TupdateUser): Promise<User | null> => {
+  try {
+    const pool = await getPool();
+    const result = await pool
+      .request()
+      .input("name", user.username)
+      .input("email", user.email)
+      .input("password", user.password)
+      .input("role", user.role)
+      .query(`UPDATE Users SET username=@name, email=@email, password=@password, role=@role WHERE id=@id; SELECT * FROM Users WHERE id=@id;`);
+
+    return result.recordset[0] || null;
+  } catch (error) {
+    throw error;
+  }
+};
