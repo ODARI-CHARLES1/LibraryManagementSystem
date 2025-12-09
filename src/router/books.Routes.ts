@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import * as BookController from '../controllers/books.Controllers.js';  
-import { isAuthenticated } from '../Middlewares/bearAuth.js';
-import { authorize } from '../Middlewares/roleAuth.js';
+import * as BookController from '../controllers/books.Controllers';  
+import { isAuthenticated } from '../Middlewares/bearAuth';
+import { authorize } from '../Middlewares/roleAuth';
 //import { authenticateJWT } from '../middleware/auth';
 //import { authorizeRole } from '../middleware/role';
 

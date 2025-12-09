@@ -1,8 +1,6 @@
-// tests/services/user.service.test.ts
-import * as userRepository from '../../src/repositories/user.Repository';
+import * as  userRepository from '../../src/repositories/user.Repository';
 import * as userService from '../../src/services/users.Service';
 
-// Mock the whole repository module
 jest.mock('../../src/repositories/user.Repository');
 
 beforeEach(() => {
@@ -31,7 +29,7 @@ describe('User Service', () => {
     expect(result).toEqual([
       {
         user_id: 1,
-        username: 'admin',
+        username: 'admin', 
         email: 'admin@library.com',
         role: 'Admin',
         created_at: new Date('2025-10-29T15:32:55.750Z'),
@@ -171,7 +169,7 @@ describe('User Service', () => {
         user_id: 2,
         username: 'member',
         email: 'member@library.com',
-        password_hash: 'hashed_password_member',
+       // password_hash: 'hashed_password_member',
         role: 'member',
         created_at: new Date('2025-10-29T15:32:55.750Z'),
         updated_at: new Date('2025-10-29T15:32:55.750Z'),
@@ -198,7 +196,7 @@ describe('User Service', () => {
         user_id: 2,
         username: 'member',
         email: 'member@library.com',
-        password_hash: 'hashed_password_member',
+       //password_hash: 'hashed_password_member',
         role: 'member',
         created_at: new Date('2025-10-29T15:32:55.750Z'),
         updated_at: new Date('2025-10-29T15:32:55.750Z'),

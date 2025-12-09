@@ -1,0 +1,986 @@
+{
+  "info": {
+    "name": "Library Management System - Complete API Collection",
+    "description": "Comprehensive Postman collection for all LMS API endpoints including Books, Categories, Users, Comments, and Borrow Records.\n\n**Authentication**: Most endpoints require Bearer token authentication\n- Public endpoints: No auth required\n- User endpoints: Any authenticated user\n- Admin endpoints: Require 'admin' role\n\n**Base URL**: {{baseUrl}}\n\n**Variables**:\n- `baseUrl`: Base API URL (e.g., http://localhost:3000)\n- `authToken`: Regular user authentication token\n- `adminToken`: Admin user authentication token\n- `lastCreatedBookId`: Stores ID of last created book\n- `lastCreatedCategoryId`: Stores ID of last created category",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "User authentication endpoints",
+      "item": [
+        {
+          "name": "User Login",
+          "description": "Authenticate user and get JWT token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "login"]
+            },
+            "description": "Returns JWT token for authenticated user. Use this token for other authenticated endpoints."
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "login"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n  \"user\": {\n    \"user_id\": 1,\n    \"username\": \"admin\",\n    \"email\": \"admin@example.com\",\n    \"role\": \"Admin\"\n  }\n}",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            },
+            {
+              "name": "Invalid Credentials",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/users/login",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["users", "login"]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"message\": \"Invalid email or password\"\n}",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response has token\", function () {",
+                  "    pm.expect(pm.response.json().token).to.exist;",
+                  "});",
+                  "if (pm.response.code === 200) {",
+                  "    pm.collectionVariables.set('authToken', pm.response.json().token);",
+                  "    pm.test(\"Token stored for future requests\", function () {",
+                  "        pm.expect(pm.collectionVariables.get('authToken')).to.not.be.empty;",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Categories API",
+      "description": "Category management endpoints",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "description": "Retrieve all book categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories"]
+            },
+            "description": "Public endpoint - no authentication required"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "categories"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "[{\n  \"category_id\": 1,\n  \"name\": \"Fiction\",\n  \"description\": \"Novels and literary works\",\n  \"created_at\": \"2023-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2023-01-01T00:00:00.000Z\"\n}]",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response is array\", function () {",
+                  "    pm.expect(pm.response.json()).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Category by ID",
+          "description": "Retrieve specific category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories", "1"]
+            },
+            "description": "Public endpoint - no authentication required"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/categories/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "categories", "1"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"category_id\": 1,\n  \"name\": \"Fiction\",\n  \"description\": \"Novels and literary works\",\n  \"created_at\": \"2023-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2023-01-01T00:00:00.000Z\"\n}",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create Category (Admin)",
+          "description": "Create new category - Admin only",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Science Fiction\",\n  \"description\": \"Futuristic and speculative fiction\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories"]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "categories"]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"category_id\": 2,\n  \"name\": \"Science Fiction\",\n  \"description\": \"Futuristic and speculative fiction\",\n  \"created_at\": \"2023-01-02T00:00:00.000Z\",\n  \"updated_at\": \"2023-01-02T00:00:00.000Z\"\n}",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('lastCreatedCategoryId', pm.response.json().category_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Category (Admin)",
+          "description": "Update existing category - Admin only",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated: Science fiction and fantasy books\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{lastCreatedCategoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories", "{{lastCreatedCategoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category (Admin)",
+          "description": "Delete category - Admin only",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{lastCreatedCategoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "categories", "{{lastCreatedCategoryId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books API",
+      "description": "Book management endpoints",
+      "item": [
+        {
+          "name": "Get All Books (with filters)",
+          "description": "Retrieve all books with optional filtering",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/books?title=1984&author=Orwell&category_id=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books"],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "1984"
+                },
+                {
+                  "key": "author",
+                  "value": "Orwell"
+                },
+                {
+                  "key": "category_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/books",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "books"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "[{\n  \"book_id\": 1,\n  \"title\": \"1984\",\n  \"author\": \"George Orwell\",\n  \"category_id\": 1,\n  \"publication_year\": 1949,\n  \"stock_quantity\": 10,\n  \"created_at\": \"2023-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2023-01-01T00:00:00.000Z\"\n}]",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Get Book by ID",
+          "description": "Retrieve specific book by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/books/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Book (Admin)",
+          "description": "Create new book - Admin only",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"1984\",\n  \"author\": \"George Orwell\",\n  \"category_id\": 1,\n  \"publication_year\": 1949,\n  \"stock_quantity\": 10\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/books",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    pm.collectionVariables.set('lastCreatedBookId', pm.response.json().book_id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Book (Admin)",
+          "description": "Update existing book - Admin only",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stock_quantity\": 15\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/books/{{lastCreatedBookId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books", "{{lastCreatedBookId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Book (Admin)",
+          "description": "Delete book - Admin only",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/books/{{lastCreatedBookId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "books", "{{lastCreatedBookId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users API",
+      "description": "User management endpoints",
+      "item": [
+        {
+          "name": "Create User",
+          "description": "Register new user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"secure123\",\n  \"role\": \"Member\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users (Admin)",
+          "description": "Get all users - Admin only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get All Admins (Admin)",
+          "description": "Get all admin users - Admin only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/admins",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "admins"]
+            }
+          }
+        },
+        {
+          "name": "Get All Members (Admin)",
+          "description": "Get all member users - Admin only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/members",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "members"]
+            }
+          }
+        },
+        {
+          "name": "Update User (Admin)",
+          "description": "Update user - Admin only",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"updated@example.com\",\n  \"role\": \"Admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/update/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "update", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete User (Admin)",
+          "description": "Delete user - Admin only",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/delete/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "delete", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments API",
+      "description": "Book comment and rating endpoints",
+      "item": [
+        {
+          "name": "Create Comment",
+          "description": "Add comment/rating to a book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excellent book!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get All Comments",
+          "description": "Get all book comments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/comments",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments"]
+            }
+          }
+        },
+        {
+          "name": "Get Comment by ID",
+          "description": "Get specific comment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Comment",
+          "description": "Update existing comment",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated review\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:id",
+              "host": ["{{baseUrl}}"],
+              "path": [":id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Comment",
+          "description": "Delete comment",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/comments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["comments", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Borrow Records API",
+      "description": "Book borrowing management endpoints",
+      "item": [
+        {
+          "name": "Get All Borrow Records (Admin)",
+          "description": "Get all borrow records - Admin only",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records"]
+            }
+          }
+        },
+        {
+          "name": "Get Borrow Record by ID",
+          "description": "Get specific borrow record",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Borrow Record",
+          "description": "Create new borrow record",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": 1,\n  \"book_id\": 1,\n  \"borrow_date\": \"2023-01-01\",\n  \"due_date\": \"2023-01-15\",\n  \"status\": \"Borrowed\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records", "create"]
+            }
+          }
+        },
+        {
+          "name": "Update Borrow Record",
+          "description": "Update borrow record",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Extended\",\n  \"due_date\": \"2023-01-22\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records/update/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records", "update", "1"]
+            }
+          }
+        },
+        {
+          "name": "Clear Borrow Record",
+          "description": "Mark borrow record as returned",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Returned\",\n  \"return_date\": \"2023-01-10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records/clear/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records", "clear", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Borrow Record",
+          "description": "Delete borrow record",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/borrow-records/delete/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["borrow-records", "delete", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "Base URL for the API"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string",
+      "description": "Regular user authentication token"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string",
+      "description": "Admin user authentication token"
+    },
+    {
+      "key": "lastCreatedBookId",
+      "value": "",
+      "type": "string",
+      "description": "ID of the last created book for testing"
+    },
+    {
+      "key": "lastCreatedCategoryId",
+      "value": "",
+      "type": "string",
+      "description": "ID of the last created category for testing"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  }
+}

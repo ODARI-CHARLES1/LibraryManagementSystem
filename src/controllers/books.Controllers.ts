@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as BookService from '../services/books.Service.js';
-import { BookInput, BookUpdateInput } from '../types/books.Interface.js';
+import * as BookService from '../services/books.Service';
+import { BookInput, BookUpdateInput } from '../types/books.Interface';
 
 export const getAllBooks = async (req: Request, res: Response): Promise<void> => {
   try {

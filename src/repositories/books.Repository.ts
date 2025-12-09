@@ -1,6 +1,6 @@
 import sql from 'mssql';
-import { getPool } from '../config/database.js';
-import { Book } from '../types/books.Interface.js';
+import { getPool } from '../config/database';
+import { Book } from '../types/books.Interface';
 
 export const findAll = async (filters: {
   title?: string;

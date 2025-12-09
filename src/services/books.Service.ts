@@ -1,5 +1,5 @@
-import * as Bookrepo from '../repositories/books.Repository.js';
-import { Book, BookInput, BookUpdateInput } from '../types/books.Interface.js';
+import * as Bookrepo from '../repositories/books.Repository';
+import { Book, BookInput, BookUpdateInput } from '../types/books.Interface';
 
 export const getAllBooks = async (filters: {
   title?: string;
