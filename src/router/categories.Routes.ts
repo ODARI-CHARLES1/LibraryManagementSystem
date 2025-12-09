@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as CategoryController from '../controllers/categories.Controllers.js';
 import { isAuthenticated } from '../Middlewares/bearAuth.js';
-import { authorize } from '../Middlewares/roleAuth.js';
+import { authorize } from '../Middlewares/bearAuth.js';
 //import { authenticateJWT } from '../middleware/auth';
 //import { authorizeRole } from '../middleware/role';
 

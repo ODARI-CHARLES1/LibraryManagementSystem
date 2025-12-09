@@ -29,7 +29,6 @@ app.get("/", (req, res) => {
 })
 
 app.get("/", (req, res) => {res.send("Hello, the express server is running")})
-app.get("/home",(req,res)=>{res.send("Try Again after 20mins")})
 
 
 const port = 3000
