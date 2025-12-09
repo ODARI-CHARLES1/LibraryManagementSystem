@@ -107,3 +107,5 @@ INSERT INTO Comments (user_id, book_id, rating, comment) VALUES
  'Very insightful book!');
 
  SELECT * FROM Comments;
+
+ SELECT * from users;

@@ -14,7 +14,7 @@ export const validateUser=async(req:Request,res:Response,next:NextFunction)=>{
         }
         if(!userData.username)missingFields.push("username") 
         if(!userData.email)missingFields.push("email")
-        if(!userData.password)missingFields.push("passoword")
+        if(!userData.password)missingFields.push("password")
         if(missingFields.length>0){
             res.status(400).json({success:false,message:{
                 error:"Provide User",
