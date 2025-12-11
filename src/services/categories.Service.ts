@@ -1,5 +1,5 @@
-import * as CategoriesRepository from '../repositories/categories.Repository.js';
-import { Category, CategoryInput, CategoryUpdateInput } from '../types/categories.Interface.js';
+import * as CategoriesRepository from '../repositories/categories.Repository';
+import { Category, CategoryInput, CategoryUpdateInput } from '../types/categories.Interface';
 
 export const getAllCategories = async (): Promise<Category[]> => {
   return await CategoriesRepository.findAll();

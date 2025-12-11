@@ -1,9 +1,7 @@
 import { Router } from 'express';
-import * as CategoryController from '../controllers/categories.Controllers.js';
-import { isAuthenticated } from '../Middlewares/bearAuth.js';
+import * as CategoryController from '../controllers/categories.Controllers';
+import { isAuthenticated } from '../Middlewares/bearAuth';
 import { authorize } from '../Middlewares/roleAuth';
-
-
 const router = Router();
 
 router.get('/',CategoryController.getAllCategories);

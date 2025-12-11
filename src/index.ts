@@ -23,13 +23,9 @@ app.use('/api', commentsRouter);
 
 
 
-app.use(express.json());
-
 app.get("/", (req, res) => {
     res.send("Hello, the express server is running")
 })
-
-app.get("/", (req, res) => {res.send("Hello, the express server is running")})
 
 
 const port = 3000
