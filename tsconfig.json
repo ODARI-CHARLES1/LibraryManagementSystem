@@ -5,7 +5,7 @@
     "rootDir": "./src",
     "moduleResolution": "nodenext",
     "isolatedModules": true,
-    "outDir": "./dist",
+    "outDir": "./src/dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
