@@ -14,14 +14,15 @@ app.use(cors({
     origin:"http://localhost:5173",
     methods:["POST","GET","PUT","DELETE"]
 }))
-//load routes
+
 app.use("/api",userRouter)
 app.use("/api",borrowRouter)
 app.use('/api/categories', categoriesRouter);
 app.use('/api/books', booksRouter);
 app.use('/api', commentsRouter);
 
-//middleware
+
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
