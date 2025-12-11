@@ -1,11 +1,11 @@
 import  express from "express";
-import { getPool } from "./config/database";
-import userRouter from "./router/user.routes";
-import borrowRouter from "./router/borrowrecords.Routes";
-import categoriesRouter from './router/categories.Routes';
-import booksRouter from './router/books.Routes';
-import commentsRouter from './router/comments.Routes';
-import { rateLimiterMiddleware } from "./Middlewares/rateLimiter";
+import { getPool } from "./src/config/database";
+import userRouter from "./src/router/user.routes";
+import borrowRouter from "./src/router/borrowrecords.Routes";
+import categoriesRouter from './src/router/categories.Routes';
+import booksRouter from './src/router/books.Routes';
+import commentsRouter from './src/router/comments.Routes';
+import { rateLimiterMiddleware } from "./src/Middlewares/rateLimiter";
 import cors from 'cors'
 
 const app = express()
