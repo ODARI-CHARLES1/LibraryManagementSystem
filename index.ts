@@ -10,10 +10,7 @@ import cors from 'cors'
 
 const app = express()
 app.use(express.json())
-app.use(cors({
-    origin:"https://librarymanagementsystem-7.onrender.com",
-    methods:["POST","GET","PUT","DELETE"]
-}))
+app.use(cors())
 
 app.use("/api",userRouter)
 app.use("/api",borrowRouter)
