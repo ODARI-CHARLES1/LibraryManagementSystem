@@ -53,7 +53,7 @@ A comprehensive library management software built with Node.js, Express, and SQL
    SQL_PORT=1433
    JWT_SECRET=replace-with-a-long-random-secret
    ```
-   `SQL_PORT` is the SQL Server port. The application currently listens on `http://localhost:3000`; it does not read an app `PORT` variable. The root `.gitignore` already excludes `.env`, so do not commit credentials.
+   `SQL_PORT` is required by the current environment validation; the current database connection uses SQL Server's default port. The application listens on `http://localhost:3000` and does not read an app `PORT` variable. The root `.gitignore` already excludes `.env`, so do not commit credentials.
 
 4. Set up the database:
    In SQL Server Management Studio, open and execute `src/config/librarymangement.sql` once. The script creates the `LibraryManagement` database, tables, and sample rows. It includes `CREATE DATABASE`, so run it using a login allowed to create databases.
