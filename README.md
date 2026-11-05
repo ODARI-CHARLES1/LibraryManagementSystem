@@ -26,9 +26,9 @@ A comprehensive library management software built with Node.js, Express, and SQL
 
 ## Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js
 - SQL Server
-- pnpm
+- pnpm (the repository declares pnpm 10.17.0)
 
 ## Installation
 
@@ -44,18 +44,19 @@ A comprehensive library management software built with Node.js, Express, and SQL
    ```
 
 3. Set up environment variables:
-    Create a `.env` file in the root directory with the following variables:
-    ```
-    SQL_SERVER=your-sql-server-host
-    SQL_DB=your-database-name
-    SQL_USER=your-username
-    SQL_PWD=your-password
-    SQL_PORT=your-sql-server-port
-    JWT_SECRET=your-jwt-secret-key
-    ```
+   Create a `.env` file in the repository root. Replace each placeholder with your local values:
+   ```dotenv
+   SQL_SERVER=your-sql-server-host
+   SQL_DB=LibraryManagement
+   SQL_USER=your-sql-username
+   SQL_PWD=your-sql-password
+   SQL_PORT=1433
+   JWT_SECRET=replace-with-a-long-random-secret
+   ```
+   `SQL_PORT` is the SQL Server port. The application currently listens on `http://localhost:3000`; it does not read an app `PORT` variable. The root `.gitignore` already excludes `.env`, so do not commit credentials.
 
 4. Set up the database:
-   Run the SQL script located at `src/config/librarymangement.sql` to create the necessary tables and schema.
+   In SQL Server Management Studio, open and execute `src/config/librarymangement.sql` once. The script creates the `LibraryManagement` database, tables, and sample rows. It includes `CREATE DATABASE`, so run it using a login allowed to create databases.
 
 ## Usage
 
@@ -140,7 +141,9 @@ src/
 ├── types/                   # TypeScript interfaces
 ├── Utils/                   # Utility functions
 ├── Middlewares/             # Authentication and validation middleware
-└── index.ts                 # Application entry point
+└── ...
+
+index.ts                     # Application entry point (repository root)
 ```
 
 ## Database Schema
